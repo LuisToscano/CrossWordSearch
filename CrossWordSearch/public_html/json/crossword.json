@@ -1,0 +1,13 @@
+{
+    "type": "crossword",
+    "width": 10,
+    "height": 10,
+    "words": {
+        "0":{
+            "word": "apple",
+            "starting_x": 0,
+            "starting_y": 5,
+            "direction": "down"
+        }
+    }
+}
