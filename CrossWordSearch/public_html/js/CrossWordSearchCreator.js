@@ -60,15 +60,13 @@ function createCrossword(jsonURL, container) {
                                 var contLetras = 0;
                                 for (var i = inicio; i <= final; i++) {
                                     
-                                    if(i===inicio)
-                                    {
-                                        $("[crossWrapperX=" + ejex + "][crossWrapperY=" + i + "]", container).attr("horizontalTag", key);
-                                    }
-                                    
                                     if ($("[crossWrapperX=" + ejex + "][crossWrapperY=" + i + "] input", container).length === 0) {
+                                        var inputObjContainer = jQuery('<div/>', {'class': 'inputContainer'});
                                         var inputObj = jQuery('<input/>', {'type': 'text', 'maxlength': 1});
+                                        inputObjContainer.append(inputObj);
+                                        
                                         $("[crossWrapperX=" + ejex + "][crossWrapperY=" + i + "]", container).addClass("active");
-                                        $("[crossWrapperX=" + ejex + "][crossWrapperY=" + i + "]", container).append(inputObj);
+                                        $("[crossWrapperX=" + ejex + "][crossWrapperY=" + i + "]", container).append(inputObjContainer);
                                         typeof matrixLetras[ejex] === "undefined" ? matrixLetras[ejex] = [] : false;
                                         matrixLetras[ejex][i] = finalWord.charAt(contLetras);
                                     }
@@ -79,6 +77,16 @@ function createCrossword(jsonURL, container) {
                                             $("[crossWrapperX=" + ejex + "][crossWrapperY=" + i + "]", container).addClass("error");
                                         }
                                     }
+                                    
+                                    if(i===inicio)
+                                    {
+                                        var tagContainer = jQuery('<div/>', {'class': 'inputContainer'});
+                                        var tagObj = jQuery('<div class="horizontalTag">'+key+'</div>', {});
+                                        tagContainer.append(tagObj);
+                                        
+                                        $("[crossWrapperX=" + ejex + "][crossWrapperY=" + i + "]", container).append(tagContainer);
+                                    }
+                                    
                                     var letrasObj = {"x": "", "y": ""};
                                     letrasObj.x = ejex;
                                     letrasObj.y = i;
@@ -117,15 +125,14 @@ function createCrossword(jsonURL, container) {
                                 var letras = [];
                                 for (var i = inicio; i <= final; i++) {
                                     
-                                    if(i===inicio)
-                                    {
-                                        $("[crossWrapperX=" + i + "][crossWrapperY=" + ejey + "]", container).attr("verticalTag", key);
-                                    }
-                                    
                                     if ($("[crossWrapperX=" + i + "][crossWrapperY=" + ejey + "] input", container).length === 0) {
+                                        
+                                        var inputObjContainer = jQuery('<div/>', {'class': 'inputContainer'});
                                         var inputObj = jQuery('<input/>', {'type': 'text', 'maxlength': 1});
+                                        inputObjContainer.append(inputObj);
+                                        
                                         $("[crossWrapperX=" + i + "][crossWrapperY=" + ejey + "]", container).addClass("active");
-                                        $("[crossWrapperX=" + i + "][crossWrapperY=" + ejey + "]", container).append(inputObj);
+                                        $("[crossWrapperX=" + i + "][crossWrapperY=" + ejey + "]", container).append(inputObjContainer);
                                         typeof matrixLetras[i] === "undefined" ? matrixLetras[i] = [] : false;
                                         matrixLetras[i][ejey] = finalWord.charAt(contLetras);
                                     }
@@ -135,6 +142,16 @@ function createCrossword(jsonURL, container) {
                                             $("[crossWrapperX=" + i + "][crossWrapperY=" + ejey + "]", container).addClass("error");
                                         }
                                     }
+                                    
+                                    if(i===inicio)
+                                    {
+                                        var tagContainer = jQuery('<div/>', {'class': 'inputContainer'});
+                                        var tagObj = jQuery('<div class="verticalTag">'+key+'</div>', {});
+                                        tagContainer.append(tagObj);
+                                        
+                                        $("[crossWrapperX=" + i + "][crossWrapperY=" + ejey + "]", container).append(tagContainer);
+                                    }
+                                    
                                     var letrasObj = {"x": "", "y": ""};
                                     letrasObj.x = i;
                                     letrasObj.y = ejey;
@@ -154,7 +171,6 @@ function createCrossword(jsonURL, container) {
 
             container.prop("answers", ansArray);
             editSizes(data.width, data.height, container);
-            editTags();
         }
     });
 }
@@ -176,21 +192,6 @@ function checkAnswers(container) {
             {
                 strAns += $("[crossWrapperX=" + val.x + "][crossWrapperY=" + val.y + "] input", container).val();
                 var letra = $("[crossWrapperX=" + val.x + "][crossWrapperY=" + val.y + "] input", container).val();
-                var answer_container = jQuery('<div/>', {'class': "answer_container"});
-                var right_answer_container = jQuery('<div/>', {'class': "right_answer_container"});
-                var wrong_answer_container = jQuery('<div/>', {'class': "wrong_answer_container"});
-                var right_answer = jQuery('<span class="right_answer">' + resp.word.charAt(contLetras).toUpperCase() + '</span>', {});
-                var wrong_answer;
-                if (letra !== resp.word.charAt(contLetras)) {
-                    wrong_answer = jQuery('<span class="wrong_answer">' + letra.toUpperCase() + '</span>', {});
-                }
-                right_answer_container.append(right_answer);
-                if (wrong_answer !== null) {
-                    wrong_answer_container.append(wrong_answer);
-                }
-                answer_container.append(right_answer_container);
-                answer_container.append(wrong_answer_container);
-                $("[crossWrapperX=" + val.x + "][crossWrapperY=" + val.y + "]", container).html(answer_container);
             }
             contLetras++;
         });
@@ -216,33 +217,6 @@ function editSizes(width, height, obj) {
     var newWidth = Math.floor(100 / width);
     $(".crossCell").css("width", newWidth + "%");
 }
-
-/*******************************************************************************************/
-
-function editTags() {
-  $.each($("div [horizontalTag]"),function(key, val){
-      val = $(val);
-      val.css("display","flex");
-      val.css("flex-direction","row-reverse");
-      var tag = jQuery('<div/>', {'class': "horizontalTag"});
-      tag.html(val.attr("horizontalTag"));
-      $("input", val).css("width","70%");
-      $("input", val).css("margin-right","15%");
-      val.append(tag);
-  });
-  
-  $.each($("div [verticalTag]"),function(key, val2){
-      val2 = $(val2);
-      val2.css("display","flex");
-      val2.css("flex-direction","column-reverse");
-      var tag2 = jQuery('<div/>', {'class': "verticalTag"});
-      tag2.html(val2.attr("verticalTag"));
-      $("input", val2).css("height","70%");
-      $("input", val2).css("margin-bottom","15%");
-      val2.append(tag2);
-  });
-}
-
 /*******************************************************************************************/
 
 function existsAndis(value, obj) {
