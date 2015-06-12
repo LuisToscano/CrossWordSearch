@@ -4,10 +4,18 @@
     "height": 10,
     "words": {
         "0":{
-            "word": "apple",
-            "starting_x": 0,
+            "word": "at",
+            "hint":"",
+            "starting_x": 5,
             "starting_y": 5,
-            "direction": "down"
+            "direction": "horizontal"
+        },
+        "1":{
+            "word": "tomato",
+            "hint":"",
+            "starting_x": 5,
+            "starting_y": 6,
+            "direction": "vertical"
         }
     }
 }

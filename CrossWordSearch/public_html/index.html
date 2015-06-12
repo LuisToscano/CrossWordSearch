@@ -9,14 +9,16 @@ and open the template in the editor.
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/CrossWordSearchCreator.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
-        <div id="test"></div>
+        <div id="test" style="width:600px; height: 600px; margin: 0 auto;"></div>
+        <button onclick="checkAnswers($('#test'))">sadsadsadas</button>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script type="text/javascript" src="js/CrossWordSearchCreator.js"></script>
         <script>
             $(window).load(function () {
-                createCrossword("json/crossword.json", "test");
+                createCrossword("json/crossword.json", $("#test"));
             });
         </script>
     </body>
